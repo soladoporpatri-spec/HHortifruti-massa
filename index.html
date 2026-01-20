@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabifruti - Hortifruti Premium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #8d671f 0%, #f1f8e9 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .cabecalho {
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cabecalho h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .cabecalho h1:hover {
+            transform: scale(1.05);
+        }
+
+        .cabecalho h2 {
+            font-size: clamp(2rem, 6vw, 3rem);
+            color: #4caf50;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .carrinho-widget {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .carrinho-widget:hover {
+            transform: scale(1.1);
+        }
+
+        .carrinho-widget .contador {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #f44336;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .sobre {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .sobre h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+        }
+
+        .sobre p {
+            color: #5d4037;
+            line-height: 1.6;
+            font-size: clamp(1rem, 3vw, 1.1rem);
+        }
+
+        .filtros {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .filtros button {
+            background: white;
+            border: 2px solid #1976d2;
+            color: #1976d2;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .filtros button:hover, .filtros button.ativo {
+            background: #1976d2;
+            color: white;
+        }
+
+        #titulo-produtos {
+            text-align: center;
+            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+            color: white;
+            padding: 20px;
+            margin: 30px 20px;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        .produtos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .produto {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+        }
+
+        .produto.hidden {
+            display: none;
+        }
+
+        .produto:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .produto.verdura {
+            border-top: 4px solid #4caf50;
+        }
+
+        .produto.fruta {
+            border-top: 4px solid #ffeb3b;
+        }
+
+        .produto.legume {
+            border-top: 4px solid #795548;
+        }
+
+        .produto img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .produto img:hover {
+            transform: scale(1.05);
+        }
+
+        .produto h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+            font-size: clamp(1.1rem, 3vw, 1.2rem);
+        }
+
+        .produto p {
+            color: #5d4037;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            flex-grow: 1;
+        }
+
+        .preco {
+            color: #4caf50;
+            font-size: clamp(1.3rem, 4vw, 1.5rem);
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .produto button {
+            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            width: 100%;
+            max-width: 250px;
+            margin: 0 auto;
+        }
+
+        .produto button:hover {
+            background: linear-gradient(135deg, #388e3c 0%, #2e7d32 100%);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .produto button:active {
+            transform: scale(0.98);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        
+        .gnomo {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 999;
+            transition: transform 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .gnomo:hover {
+            transform: scale(1.3) rotate(20deg);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+       
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.ativo {
+            display: flex;
+        }
+
+        .modal-conteudo {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-conteudo h2 {
+            color: #1976d2;
+            margin-bottom: 20px;
+        }
+
+        .item-carrinho {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-carrinho button {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4caf50;
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .fechar-modal {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        /* Confete */
+        .confete {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f44336;
+            top: -10px;
+            z-index: 9999;
+            animation: cair 3s linear;
+        }
+
+        @keyframes cair {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .produtos {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .carrinho-widget {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="carrinho-widget" onclick="abrirCarrinho()">
+        🛒
+        <div class="contador" id="contadorCarrinho">0</div>
+    </div>
+
+    <div class="cabecalho">
+        <h1 onclick="contarCliques()">Hortifruti</h1>
+        <h2>GabiFruti</h2>
+    </div>
+
+    <div class="sobre">
+        <h3>QUEM SOMOS?</h3>
+        <p>O maior hortifruti desse Brasil, colocando comida de verdade nas mesas dos brasileiros desde 21 de abril de 2008</p>
+    </div>
+
+    <div class="filtros">
+        <button class="ativo" onclick="filtrar('todos')">Todos</button>
+        <button onclick="filtrar('verdura')">Verduras</button>
+        <button onclick="filtrar('fruta')">Frutas</button>
+        <button onclick="filtrar('legume')">Legumes</button>
+    </div>
+
+    <h1 id="titulo-produtos">Nossos Produtos</h1>
+
+    <div class="produtos" id="produtos">
+        <div class="produto verdura" data-nome="Alface" data-preco="4.50">
+            <img src="Imagens/alface.jpg" alt="Alface">
+            <h3>Alface</h3>
+            <p>Alface beta</p>
+            <div class="preco">R$ 4,50</div>
+            <button onclick="adicionarCarrinho('Alface', 4.50)">COMPRE AGORA</button>
+        </div>
+
+        <div class="produto fruta" data-nome="Banana Nanica" data-preco="10.50">
+            <img src="Imagens/banana.jpg" alt="Banana">
+            <h3>Banana Nanica</h3>
+            <p>Banana nanica igual voce</p>
+            <div class="preco">R$ 10,50</div>
+            <button onclick="adicionarCarrinho('Banana Nanica', 10.50)">COMPRE AGORA</button>
+        </div>
+
+        <div class="produto legume" data-nome="Batatas" data-preco="6.90">
+            <img src="Imagens/batatas.jpg" alt="Batata">
+            <h3>Batatas</h3>
+            <p>Batatas selecionadas para todos os buts</p>
+            <div class="preco">R$ 6,90</div>
+            <button onclick="adicionarCarrinho('Batatas', 6.90)">COMPRE AGORA</button>
+        </div>
+
+        <div class="produto verdura" data-nome="Brócolis Orgânico" data-preco="8.90">
+            <img src="Imagens/brocolis.jpg" alt="Brócolis">
+            <h3>Brócolis Orgânico</h3>
+            <p>Brócolis pro miojo</p>
+            <div class="preco">R$ 8,90</div>
+            <button onclick="adicionarCarrinho('Brócolis Orgânico', 8.90)">COMPRE AGORA</button>
+        </div>
+
+        <div class="produto fruta" data-nome="Morango" data-preco="12.90">
+            <img src="Imagens/morangossigmas.jps.webp" alt="Morango">
+            <h3>Morango</h3>
+            <p>Morangos doces e sigmas pro brigadeiro</p>
+            <div class="preco">R$ 12,90</div>
+            <button onclick="adicionarCarrinho('Morango', 12.90)">COMPRE AGORA</button>
+        </div>
+
+        <div class="produto legume" data-nome="Cenoura" data-preco="5.50">
+            <img src="Imagens/cenouras.jps.jpg" alt="Cenoura">
+            <h3>Cenoura</h3>
+            <p>Cenouras😢</p>
+            <div class="preco">R$ 5,50</div>
+            <button onclick="adicionarCarrinho('Cenoura', 5.50)">COMPRE AGORA</button>
+        </div>
+
+        <div class="produto verdura" data-nome="Couve" data-preco="3.90">
+            <img src="Imagens/couves.webp" alt="Couve">
+            <h3>Couve</h3>
+            <p>Couve bacana</p>
+            <div class="preco">R$ 3,90</div>
+            <button onclick="adicionarCarrinho('Couve', 3.90)">COMPRE AGORA</button>
+        </div>
+
+        <div class="produto fruta" data-nome="Laranja" data-preco="7.90">
+            <img src="Imagens/laranjas-ii.jpg" alt="Laranja">
+            <h3>Laranja</h3>
+            <p>Laranjas pra fazer um suco mas o bolo é melhor</p>
+            <div class="preco">R$ 7,90</div>
+            <button onclick="adicionarCarrinho('Laranja', 7.90)">COMPRE AGORA</button>
+        </div>
+
+        <div class="produto legume" data-nome="Tomate" data-preco="9.50">
+            <img src="Imagens/tomates.webp" alt="Tomate">
+            <h3>Tomate</h3>
+            <p>Tomates e tomatinhos</p>
+            <div class="preco">R$ 9,50</div>
+            <button onclick="adicionarCarrinho('Tomate', 9.50)">COMPRE AGORA</button>
+
+        </div>
+        <div class="produto fruta" data-nome="abacaxi" data-preco="7.90">
+            <img src="Imagens/abacaxi.jpg" alt="abacaxi">
+            <h3>Abacaxi</h3>
+            <p>Abacaxi xixi pra fazer suco e vitamina e boloss</p>
+            <div class="preco">R$ 7,90</div>
+            <button onclick="adicionarCarrinho('Laranja', 7.90)">COMPRE AGORA</button>
+        </div>
+            <div class="produto fruta" data-nome="Limão" data-preco="3.90">
+            <img src="Imagens/limao.jpg" alt="Limao">
+            <h3>Limões</h3>
+            <p>Se a vida te da limoes compra uma arma</p>
+            <div class="preco">R$ 3,90</div>
+            <button onclick="adicionarCarrinho('Laranja', 3.90)">COMPRE AGORA</button>
+        </div>
+        <div class="produto fruta" data-nome="Uvas" data-preco="8.40">
+            <img src="Imagens/uvas.jpg" alt="Uvas">
+            <h3>Uvas</h3>
+            <p>Se a vida te da limoes compra uma arma</p>
+            <div class="preco">R$ 8,40</div>
+            <button onclick="adicionarCarrinho('Laranja', 8.40)">COMPRE AGORA</button> 
+        </div>
+            <div class="produto fruta" data-nome="Laranja" data-preco="8.40">
+            <img src="Imagens/maça.jpg" alt="maças">
+            <h3>Maças</h3>
+            <p>maçãs vermelhas como saci</p>
+            <div class="preco">R$ 8,40</div>
+            <button onclick="adicionarCarrinho('Laranja', 8.40)">COMPRE AGORA</button>      
+            </div>
+
+    <div class="modal" id="modalCarrinho">
+        <div class="modal-conteudo">
+            <h2>🛒 Seu Carrinho</h2>
+            <div id="itensCarrinho"></div>
+            <div class="total" id="totalCarrinho">Total: R$ 0,00</div>
+            <button class="fechar-modal" onclick="fecharCarrinho()">Fechar</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2008-2026 GabiFruti - Qualidade e gnomos para sua mesa 🧙‍♂️</p>
+    </footer>
+
+    <script>
+        let carrinho = [];
+        let cliquesNoTitulo = 0;
+        let gnomosCriados = false;
+
+        // Sistema de Carrinho
+        function adicionarCarrinho(nome, preco) {
+            carrinho.push({ nome, preco });
+            atualizarContador();
+            mostrarNotificacao(`${nome} adicionado ao carrinho!`);
+            criarConfete();
+        }
+
+        function atualizarContador() {
+            document.getElementById('contadorCarrinho').textContent = carrinho.length;
+        }
+
+        function abrirCarrinho() {
+            const modal = document.getElementById('modalCarrinho');
+            const itensDiv = document.getElementById('itensCarrinho');
+            
+            if (carrinho.length === 0) {
+                itensDiv.innerHTML = '<p style="text-align: center; color: #999;">Carrinho vazio</p>';
+            } else {
+                itensDiv.innerHTML = carrinho.map((item, index) => `
+                    <div class="item-carrinho">
+                        <span>${item.nome} - R$ ${item.preco.toFixed(2)}</span>
+                        <button onclick="removerItem(${index})">Remover</button>
+                    </div>
+                `).join('');
+            }
+            
+            const total = carrinho.reduce((sum, item) => sum + item.preco, 0);
+            document.getElementById('totalCarrinho').textContent = `Total: R$ ${total.toFixed(2)}`;
+            
+            modal.classList.add('ativo');
+        }
+
+        function fecharCarrinho() {
+            document.getElementById('modalCarrinho').classList.remove('ativo');
+        }
+
+        function removerItem(index) {
+            carrinho.splice(index, 1);
+            atualizarContador();
+            abrirCarrinho();
+        }
+
+        // Sistema de Filtros
+        function filtrar(categoria) {
+            const produtos = document.querySelectorAll('.produto');
+            const botoes = document.querySelectorAll('.filtros button');
+            
+            botoes.forEach(btn => btn.classList.remove('ativo'));
+            event.target.classList.add('ativo');
+            
+            produtos.forEach(produto => {
+                if (categoria === 'todos' || produto.classList.contains(categoria)) {
+                    produto.classList.remove('hidden');
+                } else {
+                    produto.classList.add('hidden');
+                }
+            });
+        }
+
+        // Easter Egg - Gnomos
+        function contarCliques() {
+            cliquesNoTitulo++;
+            if (cliquesNoTitulo === 5 && !gnomosCriados) {
+                invocarGnomos();
+                gnomosCriados = true;
+                mostrarNotificacao('🧙‍♂️ Os gnomos foram invocados! Clique neles!');
+            }
+        }
+
+        function invocarGnomos() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const gnomo = document.createElement('div');
+                    gnomo.className = 'gnomo';
+                    gnomo.textContent = '🧙‍♂️';
+                    gnomo.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+                    gnomo.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+                    
+                    let pontos = 0;
+                    gnomo.onclick = function() {
+                        pontos++;
+                        this.textContent = '✨';
+                        criarConfete(10);
+                        setTimeout(() => this.remove(), 500);
+                        
+                        if (pontos === 1) {
+                            mostrarNotificacao('🎉 Você encontrou um gnomo mágico! +10% de desconto!');
+                        }
+                    };
+                    
+                    document.body.appendChild(gnomo);
+                    
+                    // Gnomo spawnar aleatoriamente
+                    setInterval(() => {
+                        if (gnomo.parentElement) {
+                            gnomo.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+                            gnomo.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+                        }
+                    }, 3000);
+                }, i * 500);
+            }
+        }
+
+        // Efeito 
+        function criarConfete(quantidade = 20) {
+            const cores = ['#f44336', '#4caf50', '#2196f3', '#ffeb3b', '#9c27b0'];
+            
+            for (let i = 0; i < quantidade; i++) {
+                setTimeout(() => {
+                    const confete = document.createElement('div');
+                    confete.className = 'confete';
+                    confete.style.left = Math.random() * window.innerWidth + 'px';
+                    confete.style.background = cores[Math.floor(Math.random() * cores.length)];
+                    confete.style.animationDelay = Math.random() * 0.5 + 's';
+                    document.body.appendChild(confete);
+                    
+                    setTimeout(() => confete.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        // Notificações
+        function mostrarNotificacao(mensagem) {
+            const notif = document.createElement('div');
+            notif.textContent = mensagem;
+            notif.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: #4caf50;
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 3000);
+        }
+
+        // Animação 
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

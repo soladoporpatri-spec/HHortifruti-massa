@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hortifruti da Gabi</title>
+
+  <!--
+    =============================
+    ESTILO GLOBAL DO SITE
+    Cores principais:
+    Azul  → confiança, tranquilidade
+    Marrom → terra, natural, cuidado
+    =============================
+  -->
+  <style>
+    :root {
+      /* Paleta principal */
+      --azul: #2b6cb0;
+      --azul-claro: #bee3f8;
+      --marrom: #7b4a12;
+      --marrom-claro: #d6b58c;
+
+      /* Fundo e texto */
+      --bg: #f7fafc;
+      --texto: #1a202c;
+    }
+
+    /* Reset básico + fonte padrão */
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, var(--azul-claro), var(--bg));
+      color: var(--texto);
+    }
+
+    /* =============================
+       CABEÇALHO
+       ============================= */
+    header {
+      background: linear-gradient(135deg, var(--azul), var(--marrom));
+      color: white;
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+
+    header p {
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 1rem auto 0;
+    }
+
+    /* =============================
+       CONTEÚDO PRINCIPAL
+       ============================= */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* Grid responsivo de produtos */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    /* Card individual de produto */
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Efeito de brilho suave ao passar o mouse */
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(43,108,176,0.15),
+        transparent
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+    }
+
+    .card:hover::after {
+      opacity: 1;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: var(--marrom);
+    }
+
+    /* Pequena etiqueta acima do nome */
+    .badge {
+      display: inline-block;
+      background: var(--azul);
+      color: white;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* =============================
+       SEÇÃO INFORMATIVA
+       ============================= */
+    section.info {
+      margin-top: 4rem;
+      background: linear-gradient(135deg, white, var(--marrom-claro));
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+    }
+
+    section.info h2 {
+      margin-top: 0;
+      color: var(--azul);
+    }
+
+    /* =============================
+       RODAPÉ
+       ============================= */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: #1a202c;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+    }
+
+    /* Apenas o texto clicável recebe cursor */
+    footer span {
+      color: var(--azul-claro);
+      cursor: pointer;
+    }
+
+    /* =============================
+       EASTER EGG (MENSAGEM SECRETA)
+       ============================= */
+    .secret {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, var(--azul), var(--marrom));
+      color: white;
+      padding: 1rem 1.2rem;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: all 0.4s ease;
+    }
+
+    .secret.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Respeita usuários que preferem menos animações */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CABEÇALHO -->
+  <header>
+    <h1>Hortifruti da Gabi</h1>
+    <p>
+      Um cantinho azul e marrom onde frutas e boas ideias convivem em harmonia.
+      Não vendemos nada — é só uma brincadeira feita com carinho.
+    </p>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main>
+    <h2>Favoritos da Gabi</h2>
+
+    <!-- LISTA DE PRODUTOS -->
+    <div class="grid">
+      <div class="card">
+        <span class="badge">Clássica</span>
+        <h3>Maçã</h3>
+        <p>Equilibrada, confiável e sempre uma boa escolha.</p>
+      </div>
+
+      <div class="card">
+        <span class="badge">Energética</span>
+        <h3>Banana</h3>
+        <p>Rápida, doce e perfeita para dar aquele gás no dia.</p>
+      </div>
+
+      <div class="card">
+        <span class="badge">Tropical</span>
+        <h3>Abacaxi</h3>
+        <p>Ácido na medida certa e cheio de personalidade.</p>
+      </div>
+
+      <div class="card">
+        <span class="badge">Doce</span>
+        <h3>Uva</h3>
+        <p>Pequena no tamanho, grande no sabor.</p>
+      </div>
+
+      <div class="card">
+        <span class="badge">Queridinha</span>
+        <h3>Morango</h3>
+        <p>Bonito, delicado e impossível de ignorar.</p>
+      </div>
+
+      <div class="card">
+        <span class="badge">Refrescante</span>
+        <h3>Limão</h3>
+        <p>Ácido, forte e essencial para dar contraste.</p>
+      </div>
+
+      <div class="card">
+        <span class="badge">Suave</span>
+        <h3>Pêssego</h3>
+        <p>Macio, aromático e aconchegante.</p>
+      </div>
+
+      <div class="card">
+        <span class="badge">Elegante</span>
+        <h3>Pera</h3>
+        <p>Discreta, doce e muito subestimada.</p>
+      </div>
+    </div>
+
+    <!-- SEÇÃO EXPLICATIVA -->
+    <section class="info">
+      <h2>Sobre essa ideia</h2>
+      <p>
+        Este site foi criado como uma brincadeira criativa.
+        Um hortifruti fictício, feito apenas por diversão e aprendizado.
+      </p>
+      <p>
+        Azul representa calma e confiança.
+        Marrom representa terra e cuidado.
+        Juntos, representam carinho.
+      </p>
+    </section>
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer>
+    Feito com carinho 🍎<br />
+    <small>Clique <span id="easter-trigger">aqui</span> se você for curiosa.</small>
+  </footer>
+
+  <!-- MENSAGEM SECRETA -->
+  <div class="secret" id="secret">
+    🌱 Easter Egg desbloqueado!<br />
+    <strong>Mensagem secreta:</strong><br />
+    Gabi, você é mais incrível do que imagina.
+  </div>
+
+  <!-- =============================
+       JAVASCRIPT
+       ============================= -->
+  <script>
+    // Elementos usados no easter egg
+    const trigger = document.getElementById('easter-trigger');
+    const secret = document.getElementById('secret');
+
+    // Número de cliques necessários para ativar o easter egg
+    const CLICKS_NECESSARIOS = 5;
+
+    // Contador de cliques
+    let clicks = 0;
+
+    // Garante que os elementos existem antes de usar
+    if (trigger && secret) {
+      trigger.addEventListener('click', () => {
+        clicks++;
+
+        // Ao atingir o número definido de cliques
+        if (clicks === CLICKS_NECESSARIOS) {
+          secret.classList.add('show');
+
+          // Esconde automaticamente após 6 segundos
+          setTimeout(() => {
+            secret.classList.remove('show');
+          }, 6000);
+
+          // Reseta o contador
+          clicks = 0;
+        }
+      });
+    }
+
+    // Easter egg extra visível apenas no console
+    console.log(
+      '%cHortifruti da Gabi',
+      'color: #2b6cb0; font-size: 20px; font-weight: bold;'
+    );
+    console.log(
+      '%cSe você está lendo isso, encontrou outro easter egg 👀',
+      'color: #7b4a12;'
+    );
+  </script>
+</body>
+</html>
